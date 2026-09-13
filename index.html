@@ -54,23 +54,29 @@
                 this.y = Math.random() * -300 - 50;
                 
                 const rand = Math.random();
-                if (rand < 0.05) {
+                // Rebalanced distribution: Reduced massive foreground rates, boosted deep background metrics
+                if (rand < 0.03) {
+                    // Tier 1: Giant Foreground Streams reduced from 5% down to 3%
                     this.fontSize = 24;
                     this.speed = Math.random() * 4 + 5;
                     this.glowOpacity = 0.95;
-                } else if (rand < 0.12) {
+                } else if (rand < 0.08) {
+                    // Tier 2: Mid-Foreground Streams reduced from 7% down to 5%
                     this.fontSize = 18;
                     this.speed = Math.random() * 3 + 4;
                     this.glowOpacity = 0.85;
-                } else if (rand < 0.22) {
+                } else if (rand < 0.20) {
+                    // Tier 4: Deep Background Streams increased from 10% up to 12%
                     this.fontSize = 10;
                     this.speed = Math.random() * 1 + 1.8;
                     this.glowOpacity = 0.50;
-                } else if (rand < 0.32) {
+                } else if (rand < 0.34) {
+                    // Tier 5: Tiny Micro-Background Streams increased from 10% up to 14%
                     this.fontSize = 7;
                     this.speed = Math.random() * 0.8 + 1.2;
                     this.glowOpacity = 0.35;
                 } else {
+                    // Tier 3: Standard Midground Baseline makes up the remaining 66%
                     this.fontSize = 13;
                     this.speed = Math.random() * 2 + 2.5;
                     this.glowOpacity = 0.75;
@@ -81,13 +87,13 @@
                 this.headColor = this.isGreen ? 'rgba(215, 255, 230, 1)' : 'rgba(255, 225, 230, 1)';
                 
                 const shapeRand = Math.random();
-                if (shapeRand < 0.10) {
+                if (shapeRand < 0.05) {
                     this.leadStyle = 'dragonfly';
-                } else if (shapeRand < 0.20) {
+                } else if (shapeRand < 0.10) {
                     this.leadStyle = 'gravestone';
-                } else if (shapeRand < 0.35) {
+                } else if (shapeRand < 0.25) {
                     this.leadStyle = 'marubozu';
-                } else if (shapeRand < 0.50) {
+                } else if (shapeRand < 0.40) {
                     this.leadStyle = 'hammer';
                 } else {
                     this.leadStyle = 'standard';
@@ -101,7 +107,7 @@
                     this.symbols.push(this.generateMarketSymbol());
                 }
 
-                if (Math.random() < 0.25) {
+                if (Math.random() < 0.35) {
                     this.burnoutHeight = canvas.height + 250; 
                 } else {
                     this.burnoutHeight = Math.random() * (canvas.height * 0.75) + (canvas.height * 0.2);
@@ -129,7 +135,7 @@
             update() {
                 this.y += this.speed;
 
-                if (Math.random() > 0.8) {
+                if (Math.random() > 0.67) {
                     const index = Math.floor(Math.random() * this.symbols.length);
                     this.symbols[index] = this.generateMarketSymbol();
                 }
@@ -176,16 +182,18 @@
 
                     ctx.beginPath();
                     if (this.leadStyle === 'dragonfly') {
-                        ctx.moveTo(this.x, leadY - (this.fontSize * 0.4));
+                        ctx.moveTo(this.x - (this.fontSize * 0.4), leadY);
+                        ctx.lineTo(this.x + (this.fontSize * 0.4), leadY);
+                        ctx.moveTo(this.x, leadY - (this.fontSize * 0.8));
                         ctx.lineTo(this.x, leadY + (this.fontSize * 2.2));
                         ctx.stroke();
-                        ctx.fillText("─", this.x, leadY);
                     } 
                     else if (this.leadStyle === 'gravestone') {
+                        ctx.moveTo(this.x - (this.fontSize * 0.4), leadY);
+                        ctx.lineTo(this.x + (this.fontSize * 0.4), leadY);
                         ctx.moveTo(this.x, leadY - (this.fontSize * 2.4));
                         ctx.lineTo(this.x, leadY + (this.fontSize * 0.2));
                         ctx.stroke();
-                        ctx.fillText("─", this.x, leadY);
                     } 
                     else if (this.leadStyle === 'marubozu') {
                         ctx.fillText("█", this.x, leadY);
@@ -210,7 +218,7 @@
 
         function initializeStreams() {
             streams = [];
-            const spacing = 8.5; 
+            const spacing = 8.7; 
             const columns = Math.floor(canvas.width / spacing);
             
             for (let i = 0; i < columns; i++) {
@@ -219,7 +227,7 @@
         }
 
         function animate() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.056)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             for (let stream of streams) {
